@@ -1,17 +1,13 @@
 import { motion } from "framer-motion";
 import React from "react";
+import g1 from "../assets/gallery1.jpeg";
+import g2 from "../assets/gallery2.jpeg";
+import g3 from "../assets/gallery3.jpeg";
+import g4 from "../assets/gallery4.jpeg";
+import g5 from "../assets/gallery5.jpeg";
 
 export default function Gallery() {
-  const images = [
-    "/images/gallery1.jpg",
-    "/images/gallery2.jpg",
-    "/images/gallery3.jpg",
-    "/images/gallery4.jpg",
-    "/images/gallery5.jpg",
-    "/images/gallery6.jpg",
-    "/images/gallery7.jpg",
-    "/images/gallery8.jpg",
-  ];
+  const images = [g1, g2, g3, g4, g5];
 
   return (
     <div className="min-h-screen bg-black text-white py-20 px-6">
