@@ -17,7 +17,7 @@ export default function Contact() {
             📞 <span className="font-semibold">Phone:</span> +91 7020692311
           </p>
           <p>
-            📧 <span className="font-semibold">Email:</span> saivilla@gmail.com
+            📧 <span className="font-semibold">Email:</span> saifinserve25@gmail.com
           </p>
           <p>
             📍 <span className="font-semibold">Location:</span> Ambika Farms, Nagpur, Maharashtra
