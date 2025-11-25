@@ -1,21 +1,31 @@
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import axios from "axios";
 
 export default function Booking() {
   const [selected, setSelected] = useState();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [bookedDates, setBookedDates] = useState([]);
 
-  // Example booked dates (replace with backend API soon)
-  const bookedDates = [
-    new Date(2025, 1, 14),
-    new Date(2025, 1, 18),
-    new Date(2025, 1, 21),
-  ];
+  useEffect(() => {
+    // Fetch booked dates from backend
+    const fetchBookedDates = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/bookings`);
+        // Assuming each booking has a 'date' field stored as ISO string
+        const dates = res.data.map(booking => new Date(booking.date));
+        setBookedDates(dates);
+      } catch (err) {
+        console.error("Failed to fetch booked dates", err);
+      }
+    };
+    fetchBookedDates();
+  }, []);
 
   const handleSubmit = () => {
     if (!name || !phone || !selected) {
@@ -46,7 +56,7 @@ Message: ${message}`;
         <h1 className="text-4xl font-bold text-center mb-10">Book Your Stay</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          
+
           {/* Date Picker */}
           <div className="bg-zinc-800 p-6 rounded-xl shadow-lg">
             <h2 className="text-2xl font-semibold mb-4">Select a Date</h2>
