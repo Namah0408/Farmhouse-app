@@ -2,9 +2,39 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function Booking() {
   const [selected, setSelected] = useState();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+
+  // Example booked dates (replace with backend API soon)
+  const bookedDates = [
+    new Date(2025, 1, 14),
+    new Date(2025, 1, 18),
+    new Date(2025, 1, 21),
+  ];
+
+  const handleSubmit = () => {
+    if (!name || !phone || !selected) {
+      alert("Please fill all required fields!");
+      return;
+    }
+
+    const date = selected.toLocaleDateString();
+    const prefilledMessage = `Hi, I want to book the farmhouse.
+Name: ${name}
+Phone: ${phone}
+Date: ${date}
+Message: ${message}`;
+
+    const encodedMessage = encodeURIComponent(prefilledMessage);
+    const adminPhoneNumber = "917020692311";
+
+    window.open(`https://wa.me/${adminPhoneNumber}?text=${encodedMessage}`, "_blank");
+  };
 
   return (
     <div className="min-h-screen bg-black text-white flex justify-center py-16 px-6">
@@ -16,13 +46,28 @@ export default function Booking() {
         <h1 className="text-4xl font-bold text-center mb-10">Book Your Stay</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          
           {/* Date Picker */}
           <div className="bg-zinc-800 p-6 rounded-xl shadow-lg">
             <h2 className="text-2xl font-semibold mb-4">Select a Date</h2>
             <DayPicker
               mode="single"
               selected={selected}
-              onSelect={setSelected}
+              onSelect={(date) => {
+                if (bookedDates.some(d => d.toDateString() === date.toDateString())) {
+                  alert("This date is already booked!");
+                  return;
+                }
+                setSelected(date);
+              }}
+              modifiers={{ booked: bookedDates }}
+              modifiersStyles={{
+                booked: {
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: "8px"
+                }
+              }}
               className="bg-white text-black rounded-lg p-3"
             />
           </div>
@@ -31,32 +76,41 @@ export default function Booking() {
           <div className="bg-zinc-800 p-6 rounded-xl shadow-lg">
             <h2 className="text-2xl font-semibold mb-4">Your Details</h2>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="text"
                 placeholder="Full Name"
-                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white focus:outline-none"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white"
               />
 
               <input
                 type="number"
                 placeholder="Phone Number"
-                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white focus:outline-none"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white"
               />
 
               <textarea
                 placeholder="Message"
-                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white h-28 resize-none focus:outline-none"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white h-28 resize-none"
               ></textarea>
 
               <button
                 type="button"
-                className="w-full py-3 bg-green-600 hover:bg-green-700 rounded-lg text-lg font-medium"
+                onClick={handleSubmit}
+                className="w-full py-3 bg-green-600 hover:bg-green-700 rounded-lg text-lg font-medium flex items-center justify-center gap-2"
               >
-                Submit Request
+                <FaWhatsapp className="text-2xl" />
+                Submit Request on WhatsApp
               </button>
             </form>
           </div>
+
         </div>
       </motion.div>
     </div>

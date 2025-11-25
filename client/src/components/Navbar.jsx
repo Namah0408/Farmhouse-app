@@ -31,7 +31,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link to="/admin/login" className="hidden md:inline-block px-4 py-2 bg-zinc-800 text-gray-200 rounded-lg hover:bg-zinc-700">
+          <Link to="/admin/login" className="hidden md:inline-block px-4 py-2 bg-green-500 text-gray-200 rounded-lg hover:bg-green-700">
             Admin
           </Link>
 

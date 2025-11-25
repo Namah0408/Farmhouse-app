@@ -14,13 +14,13 @@ export default function Contact() {
 
         <div className="space-y-4">
           <p>
-            📞 <span className="font-semibold">Phone:</span> +91 9876543210
+            📞 <span className="font-semibold">Phone:</span> +91 7020692311
           </p>
           <p>
-            📧 <span className="font-semibold">Email:</span> greennestfarmhouse@gmail.com
+            📧 <span className="font-semibold">Email:</span> saivilla@gmail.com
           </p>
           <p>
-            📍 <span className="font-semibold">Location:</span> Near Nagpur, Maharashtra
+            📍 <span className="font-semibold">Location:</span> Ambika Farms, Nagpur, Maharashtra
           </p>
         </div>
 

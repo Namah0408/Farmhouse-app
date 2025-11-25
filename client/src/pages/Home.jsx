@@ -49,8 +49,8 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
           className="mt-10 inline-block px-10 py-4 text-lg font-semibold rounded-full 
-                     backdrop-blur-xl bg-white/10 border border-white/20 
-                     text-white shadow-xl hover:bg-white/20 transition-all"
+                     backdrop-blur-xl bg-green-500 border border-white/20 
+                     text-white shadow-xl hover:bg-green-700 transition-all"
         >
           Book Now
         </motion.a>

@@ -13,14 +13,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect DB
-connectDB();
-
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || true,
+  origin: ["http://localhost:5173", "http://localhost:5174"],
   credentials: true
 }));
+
 app.use(express.json());
 
 // Routes
@@ -33,11 +31,24 @@ app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 // Global error handler
 app.use(errorHandler);
 
-// Seed admin (creates admin from env if not exists)
-seedAdminIfNeeded().catch(err => {
-  console.error("Seed admin error:", err);
-});
+// -----------------------------
+// ✅ CONNECT DB → THEN SEED ADMIN
+// -----------------------------
+connectDB()
+  .then(async () => {
+    console.log("MongoDB Connected");
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    try {
+      await seedAdminIfNeeded();
+      console.log("✔ Admin seeding completed");
+    } catch (err) {
+      console.error("❌ Admin seeding error:", err);
+    }
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error("❌ DB connection failed:", err);
+  });

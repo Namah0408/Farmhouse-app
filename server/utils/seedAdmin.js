@@ -2,23 +2,32 @@ import Admin from "../models/Admin.js";
 
 export const seedAdminIfNeeded = async () => {
   try {
-    if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
-      console.log("ADMIN_EMAIL or ADMIN_PASSWORD not set — skipping admin seed.");
+    const email = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
+
+    // Check if .env values exist
+    if (!email || !password) {
+      console.log("⚠️ ADMIN_EMAIL or ADMIN_PASSWORD missing — skipping admin seed.");
       return;
     }
-    const existing = await Admin.findOne({ email: process.env.ADMIN_EMAIL });
+
+    // Check if admin already exists
+    const existing = await Admin.findOne({ email });
     if (existing) {
-      console.log("Admin already exists.");
+      console.log("✔ Admin already exists. Skipping seed.");
       return;
     }
+
+    // Create new admin
     const admin = new Admin({
       name: "Owner",
-      email: process.env.ADMIN_EMAIL,
-      password: process.env.ADMIN_PASSWORD
+      email,
+      password   // Auto-hashed by Admin model pre-save hook
     });
+
     await admin.save();
-    console.log("Admin user created from .env");
+    console.log("🎉 Admin created successfully from .env");
   } catch (err) {
-    console.error("seedAdminIfNeeded error:", err);
+    console.error("❌ seedAdminIfNeeded error:", err.message);
   }
 };
