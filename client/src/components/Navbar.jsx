@@ -13,15 +13,15 @@ export default function Navbar() {
           <NavLink to="/" end className={({isActive}) => isActive ? "text-green-400" : "text-gray-300 hover:text-white"}>
             Home
           </NavLink>
-          <NavLink to="/gallery" className={({isActive}) => isActive ? "text-green-400" : "text-gray-300 hover:text-white"}>
+          {/*<NavLink to="/gallery" className={({isActive}) => isActive ? "text-green-400" : "text-gray-300 hover:text-white"}>
+            Gallery
+          </NavLink>*/}
+          <NavLink to="/amenities-gallery" className={({isActive}) => isActive ? "text-green-400" : "text-gray-300 hover:text-white"}>
             Gallery
           </NavLink>
-          <NavLink to="/amenities" className={({isActive}) => isActive ? "text-green-400" : "text-gray-300 hover:text-white"}>
-            Amenities
-          </NavLink>
-          <NavLink to="/pricing" className={({isActive}) => isActive ? "text-green-400" : "text-gray-300 hover:text-white"}>
+          {/*<NavLink to="/pricing" className={({isActive}) => isActive ? "text-green-400" : "text-gray-300 hover:text-white"}>
             Pricing
-          </NavLink>
+          </NavLink>*/}
           <NavLink to="/booking" className={({isActive}) => isActive ? "text-green-400" : "text-gray-300 hover:text-white"}>
             Booking
           </NavLink>

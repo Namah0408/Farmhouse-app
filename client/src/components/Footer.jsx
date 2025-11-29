@@ -11,16 +11,16 @@ export default function Footer() {
             <span className="text-white font-semibold">SaiVilla Farmhouse</span>
           </div>
           <p className="text-sm text-gray-400">
-            Luxury farmhouse for private stays, events and weekend getaways near Nagpur.
+            Luxury farmhouse for family stays, events and weekend getaways near Nagpur.
           </p>
         </div>
 
         <div>
           <h4 className="text-white font-semibold mb-2">Quick Links</h4>
           <ul className="space-y-2 text-sm">
-            <li><a href="/pricing" className="hover:text-white">Pricing</a></li>
+            {/*<li><a href="/pricing" className="hover:text-white">Pricing</a></li>*/}
             <li><a href="/booking" className="hover:text-white">Book Now</a></li>
-            <li><a href="/gallery" className="hover:text-white">Gallery</a></li>
+            <li><a href="/amenities-gallery" className="hover:text-white">Gallery</a></li>
             <li><a href="/contact" className="hover:text-white">Contact</a></li>
           </ul>
         </div>
@@ -28,6 +28,17 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-semibold mb-2">Contact</h4>
           <p className="text-sm">Phone: +91 70206 92311</p>
+          <p className="text-sm">
+                      <span className="text-sm">Instagram: </span>
+                      <a
+                        href="https://www.instagram.com/saivilla2025/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-green-400 hover:underline"
+                      >
+                        @saivillafarms
+                      </a>
+                    </p>
           <p className="text-sm">Email: saifinserve25@gmail.com</p>
           <p className="text-sm mt-4">© {year} Sai Villa Farmhouse</p>
         </div>

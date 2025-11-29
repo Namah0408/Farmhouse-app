@@ -29,7 +29,7 @@ export default function Home() {
           transition={{ duration: 1 }}
           className="text-5xl md:text-7xl font-extrabold text-white tracking-tight drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]"
         >
-          Escape to Serenity
+          SaiVilla Family Resort
         </motion.h1>
 
         {/* Subtitle */}
@@ -37,9 +37,9 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="text-lg md:text-2xl text-gray-200 mt-6 leading-relaxed drop-shadow-xl"
+          className="text-lg md:text-2xl text-white mt-6 leading-relaxed drop-shadow-xl"
         >
-          Experience nature, luxury, and peace — all in one beautiful farmhouse retreat.
+          A Perfect Getaway for your family to Relax, Reconnect and Celebrate 
         </motion.p>
 
         {/* Glassmorphic Button */}

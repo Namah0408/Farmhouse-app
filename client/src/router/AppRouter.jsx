@@ -10,6 +10,7 @@ import Booking from "../pages/Booking";
 import Contact from "../pages/Contact";
 import AdminLogin from "../pages/Admin/AdminLogin";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
+import GalleryAmenities from "../pages/GalleryAmenities";
 import { BookingProvider } from "../context/BookingContext";
 
 /* Simple protected wrapper for admin UI (for now checks a token in localStorage) */
@@ -28,9 +29,10 @@ export default function AppRouter() {
           <main className="pt-20"> {/* add offset for fixed navbar */}
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/amenities" element={<Amenities />} />
-              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/amenities-gallery" element={<GalleryAmenities />} />
+              {/*<Route path="/gallery" element={<Gallery />} />
+              <Route path="/amenities" element={<Amenities />} />*/}
+              {/*<Route path="/pricing" element={<Pricing />} />*/}
               <Route path="/booking" element={<Booking />} />
               <Route path="/contact" element={<Contact />} />
 

@@ -6,19 +6,19 @@ import { FaWhatsapp } from "react-icons/fa";
 import axios from "axios";
 
 export default function Booking() {
-  const [selected, setSelected] = useState();
+  const [range, setRange] = useState({ from: undefined, to: undefined });
   const [name, setName] = useState("");
+  const [guests, setGuests] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [bookedDates, setBookedDates] = useState([]);
 
   useEffect(() => {
-    // Fetch booked dates from backend
     const fetchBookedDates = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/bookings`);
-        // Assuming each booking has a 'date' field stored as ISO string
-        const dates = res.data.map(booking => new Date(booking.date));
+
+        const dates = res.data.map(b => new Date(b.date));
         setBookedDates(dates);
       } catch (err) {
         console.error("Failed to fetch booked dates", err);
@@ -28,22 +28,51 @@ export default function Booking() {
   }, []);
 
   const handleSubmit = () => {
-    if (!name || !phone || !selected) {
-      alert("Please fill all required fields!");
+    if (!name || !guests || !phone || !range.from || !range.to) {
+      alert("Please fill all required fields and select a date range!");
       return;
     }
 
-    const date = selected.toLocaleDateString();
-    const prefilledMessage = `Hi, I want to book the farmhouse.
+    const startDate = range.from.toLocaleDateString();
+    const endDate = range.to.toLocaleDateString();
+
+    const prefilledMessage = `Hello! I am interested in booking your Farmhouse
 Name: ${name}
+Guests: ${guests}
 Phone: ${phone}
-Date: ${date}
+Start Date: ${startDate}
+End Date: ${endDate}
 Message: ${message}`;
 
     const encodedMessage = encodeURIComponent(prefilledMessage);
     const adminPhoneNumber = "917020692311";
 
-    window.open(`https://wa.me/${adminPhoneNumber}?text=${encodedMessage}`, "_blank");
+    window.open(
+      `https://wa.me/${adminPhoneNumber}?text=${encodedMessage}`,
+      "_blank"
+    );
+  };
+
+  // BLOCK RANGE IF ANY DATE INSIDE IT IS BOOKED
+  const isRangeAllowed = (range) => {
+    if (!range?.from || !range?.to) return true;
+
+    const current = new Date(range.from);
+    while (current <= range.to) {
+      if (bookedDates.some(d => d.toDateString() === current.toDateString())) {
+        return false;
+      }
+      current.setDate(current.getDate() + 1);
+    }
+    return true;
+  };
+
+  const handleRangeSelect = (newRange) => {
+    if (!isRangeAllowed(newRange)) {
+      alert("Selected range includes booked dates!");
+      return;
+    }
+    setRange(newRange);
   };
 
   return (
@@ -56,42 +85,50 @@ Message: ${message}`;
         <h1 className="text-4xl font-bold text-center mb-10">Book Your Stay</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-
+          
           {/* Date Picker */}
           <div className="bg-zinc-800 p-6 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-semibold mb-4">Select a Date</h2>
+            <h2 className="text-2xl font-semibold mb-4">Select Dates</h2>
+
             <DayPicker
-              mode="single"
-              selected={selected}
-              onSelect={(date) => {
-                if (bookedDates.some(d => d.toDateString() === date.toDateString())) {
-                  alert("This date is already booked!");
-                  return;
-                }
-                setSelected(date);
-              }}
+              mode="range"
+              selected={range}
+              onSelect={handleRangeSelect}
               modifiers={{ booked: bookedDates }}
               modifiersStyles={{
                 booked: {
                   backgroundColor: "red",
                   color: "white",
-                  borderRadius: "8px"
+                  borderRadius: "6px"
                 }
               }}
               className="bg-white text-black rounded-lg p-3"
             />
+
+            {/*<p className="text-sm mt-3 text-gray-300">
+              Booked dates are marked in <span className="text-red-400">red</span>.
+            </p>*/}
           </div>
 
-          {/* Booking Form */}
+          {/* Form */}
           <div className="bg-zinc-800 p-6 rounded-xl shadow-lg">
             <h2 className="text-2xl font-semibold mb-4">Your Details</h2>
 
             <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+              
               <input
                 type="text"
                 placeholder="Full Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white"
+              />
+
+              <input
+                type="text"
+                placeholder="No. of Guests"
+                value={guests}
+                onChange={(e) => setGuests(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white"
               />
 
@@ -104,10 +141,10 @@ Message: ${message}`;
               />
 
               <textarea
-                placeholder="Message"
+                placeholder="Purpose of Booking"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white h-28 resize-none"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white h-18 resize-none"
               ></textarea>
 
               <button
@@ -118,6 +155,7 @@ Message: ${message}`;
                 <FaWhatsapp className="text-2xl" />
                 Submit Request on WhatsApp
               </button>
+
             </form>
           </div>
 
