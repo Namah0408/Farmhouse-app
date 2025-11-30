@@ -29,7 +29,7 @@ export default function Home() {
           transition={{ duration: 1 }}
           className="text-5xl md:text-7xl font-extrabold text-white tracking-tight drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]"
         >
-          SaiVilla Family Resort
+          Sai Villa Family Resort
         </motion.h1>
 
         {/* Subtitle */}

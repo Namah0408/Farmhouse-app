@@ -9,7 +9,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-md bg-green-500 flex items-center justify-center font-bold text-black">S</div>
-          <span className="text-white font-semibold text-lg">Sai Villa</span>
+          <span className="text-white font-semibold text-lg">SaiVilla</span>
         </Link>
 
         {/* Desktop Menu */}
