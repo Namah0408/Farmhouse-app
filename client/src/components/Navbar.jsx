@@ -6,7 +6,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-md bg-green-500 flex items-center justify-center font-bold text-black">S</div>
-          <span className="text-white font-semibold text-lg">SaiVilla</span>
+          <span className="text-white font-semibold text-lg">Sai Villa</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
