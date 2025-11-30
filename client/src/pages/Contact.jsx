@@ -37,7 +37,7 @@ export default function Contact() {
             saifinserve25@gmail.com
           </p>
           <p>
-            📍 <span className="font-semibold">Location:</span> Ambika Farms,
+            📍 <span className="font-semibold">Location:</span> Ambika Farms dwitiya, Bazaargaon, Amravati Rd, 
             Nagpur, Maharashtra
           </p>
         </div>

@@ -12,12 +12,15 @@ export default function Booking() {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [bookedDates, setBookedDates] = useState([]);
+  const [nights, setNights] = useState(0);
+  const [days, setDays] = useState(0);
+
+  const today = new Date();
 
   useEffect(() => {
     const fetchBookedDates = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/bookings`);
-
         const dates = res.data.map(b => new Date(b.date));
         setBookedDates(dates);
       } catch (err) {
@@ -26,6 +29,50 @@ export default function Booking() {
     };
     fetchBookedDates();
   }, []);
+
+  const calculateNights = (from, to) => {
+    if (!from || !to) return 0;
+    const diff = (to - from) / (1000 * 60 * 60 * 24);
+    return diff > 0 ? diff : 0;
+  };
+
+  const calculateDays = (nights) => {
+    if (nights <= 0) return 0;
+    return nights + 1;
+  };
+
+  const handleRangeSelect = (newRange) => {
+    if (!newRange) return;
+
+    if (newRange.from && newRange.from < today) {
+      alert("Past dates cannot be selected.");
+      return;
+    }
+
+    if (!isRangeAllowed(newRange)) {
+      alert("Selected range contains booked dates!");
+      return;
+    }
+
+    setRange(newRange);
+
+    const n = calculateNights(newRange.from, newRange.to);
+    setNights(n);
+    setDays(calculateDays(n));
+  };
+
+  const isRangeAllowed = (range) => {
+    if (!range?.from || !range?.to) return true;
+
+    const curr = new Date(range.from);
+    while (curr <= range.to) {
+      if (bookedDates.some(d => d.toDateString() === curr.toDateString())) {
+        return false;
+      }
+      curr.setDate(curr.getDate() + 1);
+    }
+    return true;
+  };
 
   const handleSubmit = () => {
     if (!name || !guests || !phone || !range.from || !range.to) {
@@ -42,6 +89,8 @@ Guests: ${guests}
 Phone: ${phone}
 Start Date: ${startDate}
 End Date: ${endDate}
+Total Nights: ${nights}
+Total Days: ${days}
 Message: ${message}`;
 
     const encodedMessage = encodeURIComponent(prefilledMessage);
@@ -53,75 +102,68 @@ Message: ${message}`;
     );
   };
 
-  // BLOCK RANGE IF ANY DATE INSIDE IT IS BOOKED
-  const isRangeAllowed = (range) => {
-    if (!range?.from || !range?.to) return true;
-
-    const current = new Date(range.from);
-    while (current <= range.to) {
-      if (bookedDates.some(d => d.toDateString() === current.toDateString())) {
-        return false;
-      }
-      current.setDate(current.getDate() + 1);
-    }
-    return true;
-  };
-
-  const handleRangeSelect = (newRange) => {
-    if (!isRangeAllowed(newRange)) {
-      alert("Selected range includes booked dates!");
-      return;
-    }
-    setRange(newRange);
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white flex justify-center py-16 px-6">
+    <div className="min-h-screen bg-black text-white flex justify-center pt-24 pb-16 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-zinc-900 p-10 rounded-2xl shadow-xl w-full max-w-4xl"
+        className="bg-zinc-900 p-6 md:p-10 rounded-2xl shadow-xl w-full max-w-4xl"
       >
-        <h1 className="text-4xl font-bold text-center mb-10">Book Your Stay</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">Book Your Stay</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10 gap-6">
           
-          {/* Date Picker */}
-          <div className="bg-zinc-800 p-6 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-semibold mb-4">Select Dates</h2>
+          {/* Calendar */}
+          <div className="bg-zinc-800 p-4 md:p-6 rounded-xl shadow-lg w-full">
+            <h2 className="text-xl md:text-2xl font-semibold mb-3">Select Dates</h2>
 
-            <DayPicker
-              mode="range"
-              selected={range}
-              onSelect={handleRangeSelect}
-              modifiers={{ booked: bookedDates }}
-              modifiersStyles={{
-                booked: {
-                  backgroundColor: "red",
-                  color: "white",
-                  borderRadius: "6px"
-                }
-              }}
-              className="bg-white text-black rounded-lg p-3"
-            />
+            <div className="overflow-x-auto">
+              <DayPicker
+                mode="range"
+                selected={range}
+                onSelect={handleRangeSelect}
+                disabled={{ before: today }}
+                modifiers={{ booked: bookedDates }}
+                modifiersStyles={{
+                  booked: {
+                    backgroundColor: "red",
+                    color: "white",
+                    borderRadius: "6px"
+                  }
+                }}
+                className="bg-white text-black rounded-lg p-2 md:p-3"
+              />
+            </div>
 
-            {/*<p className="text-sm mt-3 text-gray-300">
-              Booked dates are marked in <span className="text-red-400">red</span>.
-            </p>*/}
+            {/* Nights & Days Count */}
+            {(nights > 0 || days > 0) && (
+              <div className="mt-4 space-y-1">
+                {days > 0 && (
+                  <p className="text-blue-400 font-medium text-lg">
+                    📅 {days} day{days > 1 ? "s" : ""} selected
+                  </p>
+                )}
+                {nights > 0 && (
+                  <p className="text-green-400 font-medium text-lg">
+                    🌙 {nights} night{nights > 1 ? "s" : ""} selected
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Form */}
-          <div className="bg-zinc-800 p-6 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-semibold mb-4">Your Details</h2>
+          <div className="bg-zinc-800 p-4 md:p-6 rounded-xl shadow-lg">
+            <h2 className="text-xl md:text-2xl font-semibold mb-3">Your Details</h2>
 
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-              
+            <form className="space-y-4 md:space-y-5" onSubmit={(e) => e.preventDefault()}>
+
               <input
                 type="text"
                 placeholder="Full Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white text-base"
               />
 
               <input
@@ -129,7 +171,7 @@ Message: ${message}`;
                 placeholder="No. of Guests"
                 value={guests}
                 onChange={(e) => setGuests(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white text-base"
               />
 
               <input
@@ -137,14 +179,14 @@ Message: ${message}`;
                 placeholder="Phone Number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white text-base"
               />
 
               <textarea
                 placeholder="Purpose of Booking"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white h-18 resize-none"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-700 text-white text-base resize-none h-24"
               ></textarea>
 
               <button
