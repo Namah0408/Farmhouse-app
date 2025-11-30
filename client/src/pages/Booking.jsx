@@ -17,11 +17,12 @@ export default function Booking() {
 
   const today = new Date();
 
+  // Fetch booked dates
   useEffect(() => {
     const fetchBookedDates = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/bookings`);
-        const dates = res.data.map(b => new Date(b.date));
+        const dates = res.data.map((b) => new Date(b.date));
         setBookedDates(dates);
       } catch (err) {
         console.error("Failed to fetch booked dates", err);
@@ -41,7 +42,28 @@ export default function Booking() {
     return nights + 1;
   };
 
+  const isRangeAllowed = (range) => {
+    if (!range?.from || !range?.to) return true;
+
+    const curr = new Date(range.from);
+    while (curr <= range.to) {
+      if (bookedDates.some((d) => d.toDateString() === curr.toDateString())) {
+        return false;
+      }
+      curr.setDate(curr.getDate() + 1);
+    }
+    return true;
+  };
+
   const handleRangeSelect = (newRange) => {
+    // Allow clearing selection
+    if (newRange?.from === undefined && newRange?.to === undefined) {
+      setRange({ from: undefined, to: undefined });
+      setNights(0);
+      setDays(0);
+      return;
+    }
+
     if (!newRange) return;
 
     if (newRange.from && newRange.from < today) {
@@ -59,19 +81,6 @@ export default function Booking() {
     const n = calculateNights(newRange.from, newRange.to);
     setNights(n);
     setDays(calculateDays(n));
-  };
-
-  const isRangeAllowed = (range) => {
-    if (!range?.from || !range?.to) return true;
-
-    const curr = new Date(range.from);
-    while (curr <= range.to) {
-      if (bookedDates.some(d => d.toDateString() === curr.toDateString())) {
-        return false;
-      }
-      curr.setDate(curr.getDate() + 1);
-    }
-    return true;
   };
 
   const handleSubmit = () => {
@@ -109,15 +118,18 @@ Message: ${message}`;
         animate={{ opacity: 1, y: 0 }}
         className="bg-zinc-900 p-6 md:p-10 rounded-2xl shadow-xl w-full max-w-4xl"
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">Book Your Stay</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">
+          Book Your Stay
+        </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10 gap-6">
-          
+
           {/* Calendar */}
           <div className="bg-zinc-800 p-4 md:p-6 rounded-xl shadow-lg w-full">
             <h2 className="text-xl md:text-2xl font-semibold mb-3">Select Dates</h2>
 
-            <div className="overflow-x-auto">
+            {/* ✨ MOBILE SCALE WRAPPER ADDED HERE */}
+            <div className="scale-[0.78] origin-top-left md:scale-100">
               <DayPicker
                 mode="range"
                 selected={range}
@@ -135,7 +147,6 @@ Message: ${message}`;
               />
             </div>
 
-            {/* Nights & Days Count */}
             {(nights > 0 || days > 0) && (
               <div className="mt-4 space-y-1">
                 {days > 0 && (
