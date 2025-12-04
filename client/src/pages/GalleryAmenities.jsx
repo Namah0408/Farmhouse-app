@@ -26,29 +26,29 @@ export default function GalleryAmenities() {
       image: g8,
     },
     {
-      title: "Garden & Lawn Area",
+      title: "Lawn Area",
       subtitle: "Perfect for relaxing, games, and evening gatherings.",
       image: g2,
     },
     {
-      title: "Chilling Area",
+      title: "Gazeebo",
       subtitle: "A cozy space to sit, relax, and vibe with your friends.",
       image: g10,
     },
     {
       title: "Barbeque Setup",
       subtitle: "Enjoy tasty barbeque evenings with our ready-to-use setup.",
-      image: g5,
+      image: g1,
     },
     {
-      title: "Private Indoor Mini-Pool with Shower",
+      title: "Private Indoor Shower",
       subtitle: "A fun indoor experience with water and comfort together.",
-      image: g2,
+      image: g5,
     },
     {
-      title: "In-House Food",
+      title: "Bar Counter",
       subtitle: "Delicious, freshly prepared meals served at the farmhouse.",
-      image: g5,
+      image: g4,
     },
   ];
 
