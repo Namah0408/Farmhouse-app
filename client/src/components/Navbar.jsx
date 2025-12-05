@@ -22,12 +22,12 @@ export default function Navbar() {
 
         {/* Right Side */}
         <div className="flex items-center gap-3">
-          <Link 
+          {/*<Link 
             to="/admin/login" 
             className="hidden md:inline-block px-4 py-2 bg-green-500 text-gray-200 rounded-lg hover:bg-green-700"
           >
             Admin
-          </Link>
+          </Link>*/}
 
           <MobileMenu />
         </div>

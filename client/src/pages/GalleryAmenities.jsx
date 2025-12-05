@@ -12,45 +12,73 @@ import g7 from "../assets/gallery7.jpeg";
 import g8 from "../assets/gallery8.jpeg";
 import g9 from "../assets/gallery9.jpeg";
 import g10 from "../assets/gallery10.jpeg";
+import g11 from "../assets/gallery11.jpeg";
+import g12 from "../assets/gallery12.jpeg";
+import g13 from "../assets/gallery13.jpeg";
+import g14 from "../assets/gallery14.jpeg";
 
 export default function GalleryAmenities() {
   const items = [
     {
       title: "Private Swimming Pool",
-      subtitle: "A clean, refreshing pool exclusively for your group.",
+      subtitle: "Dive into a clean, refreshing pool reserved only for your group.",
       image: g3,
     },
     {
-      title: "Fully Air-Conditioned Rooms",
-      subtitle: "Stay cool and comfortable throughout your stay.",
-      image: g8,
-    },
-    {
       title: "Lawn Area",
-      subtitle: "Perfect for relaxing, games, and evening gatherings.",
+      subtitle: "A spacious green lawn perfect for picnics, games, and evening chill sessions.",
       image: g2,
     },
     {
-      title: "Gazeebo",
-      subtitle: "A cozy space to sit, relax, and vibe with your friends.",
-      image: g10,
-    },
-    {
-      title: "Barbeque Setup",
-      subtitle: "Enjoy tasty barbeque evenings with our ready-to-use setup.",
+      title: "Barbeque",
+      subtitle: "Fire up your evenings with a ready-to-use BBQ setup for sizzling meals.",
       image: g1,
     },
     {
+      title: "Bar Counter",
+      subtitle: "Serve and enjoy your drinks in style at our cozy outdoor bar counter.",
+      image: g4,
+    },
+    {
+      title: "Gazeebo",
+      subtitle: "A peaceful shaded spot to unwind, chat, and enjoy the perfect vibe.",
+      image: g10,
+    },
+    {
+      title: "Fully Air-Conditioned Rooms",
+      subtitle: "Experience cool, comfortable rooms designed for complete relaxation.",
+      image: g8,
+    },
+    {
+      title: "Kitchen Area",
+      subtitle: "A fully equipped kitchen space for all your cooking needs.",
+      image: g13,
+    },
+    {
       title: "Private Indoor Shower",
-      subtitle: "A fun indoor experience with water and comfort together.",
+      subtitle: "Refresh yourself in a comfortable, stylish indoor shower space.",
       image: g5,
     },
     {
-      title: "Bar Counter",
-      subtitle: "Delicious, freshly prepared meals served at the farmhouse.",
-      image: g4,
+      title: "Valley View",
+      subtitle: "Wake up to serene and breathtaking valley views all around.",
+      image: g14,
     },
   ];
+
+  // images you provided for the bottom area
+  const bottomImages = [g6, g7, g9, g11, g12, g3];
+
+  // chunk into pairs: [[g6,g7],[g9,g11],[g12]]
+  const chunkIntoPairs = (arr) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i += 2) {
+      result.push(arr.slice(i, i + 2));
+    }
+    return result;
+  };
+
+  const pairs = chunkIntoPairs(bottomImages);
 
   return (
     <div className="min-h-screen bg-black text-white py-20 px-6">
@@ -59,6 +87,8 @@ export default function GalleryAmenities() {
       </h1>
 
       <div className="max-w-6xl mx-auto space-y-20">
+
+        {/* NORMAL AMENITIES */}
         {items.map((item, index) => {
           const isReversed = index % 2 !== 0;
 
@@ -98,7 +128,6 @@ export default function GalleryAmenities() {
                   </h2>
                 </div>
 
-                {/* SUBTITLE HERE */}
                 <p className="mt-4 text-gray-300 text-lg leading-relaxed">
                   {item.subtitle}
                 </p>
@@ -106,6 +135,54 @@ export default function GalleryAmenities() {
             </motion.div>
           );
         })}
+
+        {/* BOTTOM: render one card per pair */}
+        {pairs.map((pair, idx) => (
+          <motion.div
+            key={`pair-${idx}`}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-900 p-6 rounded-2xl shadow-lg"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.05 * idx }}
+            viewport={{ once: true }}
+          >
+            {/* Left image */}
+            <motion.div
+              initial={{ scale: 0.95 }}
+              whileInView={{ scale: 1 }}
+              transition={{ duration: 0.45 }}
+              className="flex items-center justify-center"
+            >
+              <img
+                src={pair[0]}
+                alt={`bottom-${idx}-0`}
+                className="w-full h-72 object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-500"
+              />
+            </motion.div>
+
+            {/* Right image (if exists) otherwise show an empty placeholder to keep layout) */}
+            <motion.div
+              initial={{ scale: 0.95 }}
+              whileInView={{ scale: 1 }}
+              transition={{ duration: 0.45 }}
+              className="flex items-center justify-center"
+            >
+              {pair[1] ? (
+                <img
+                  src={pair[1]}
+                  alt={`bottom-${idx}-1`}
+                  className="w-full h-72 object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-full h-72 rounded-xl bg-gray-800 flex items-center justify-center">
+                  {/* Optional: placeholder text or leave empty */}
+                  <span className="text-gray-500">More photos coming soon</span>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        ))}
+
       </div>
     </div>
   );

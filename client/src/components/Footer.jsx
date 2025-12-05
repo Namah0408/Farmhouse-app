@@ -40,6 +40,17 @@ export default function Footer() {
                       </a>
                     </p>
           <p className="text-sm">Email: saifinserve25@gmail.com</p>
+          <p className="text-sm">
+            <span className="text-sm">Location: </span>
+            <a
+              href="https://www.google.com/maps/place/21°07'37.4N+78°46'03.9E"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 hover:underline"
+            >
+              @googlemaps
+            </a>
+          </p>
           <p className="text-sm mt-4">© {year} Sai Villa Farmhouse</p>
         </div>
       </div>
