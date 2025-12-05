@@ -7,15 +7,18 @@ import g2 from "../assets/gallery2.jpeg";
 import g3 from "../assets/gallery3.jpeg";
 import g4 from "../assets/gallery4.jpeg";
 import g5 from "../assets/gallery5.jpeg";
-import g6 from "../assets/gallery6.jpeg";
-import g7 from "../assets/gallery7.jpeg";
 import g8 from "../assets/gallery8.jpeg";
-import g9 from "../assets/gallery9.jpeg";
 import g10 from "../assets/gallery10.jpeg";
 import g11 from "../assets/gallery11.jpeg";
 import g12 from "../assets/gallery12.jpeg";
 import g13 from "../assets/gallery13.jpeg";
 import g14 from "../assets/gallery14.jpeg";
+import g15 from "../assets/gallery15.jpeg";
+import img1 from "../assets/image1.png";
+import img2 from "../assets/image2.jpeg";
+import img3 from "../assets/image3.jpeg";
+import img4 from "../assets/image4.jpeg";
+import img5 from "../assets/image5.jpeg";
 
 export default function GalleryAmenities() {
   const items = [
@@ -67,9 +70,8 @@ export default function GalleryAmenities() {
   ];
 
   // images you provided for the bottom area
-  const bottomImages = [g6, g7, g9, g11, g12, g3];
+  const bottomImages = [g12, g11, g15, img1, img2, img3, img4, img5];
 
-  // chunk into pairs: [[g6,g7],[g9,g11],[g12]]
   const chunkIntoPairs = (arr) => {
     const result = [];
     for (let i = 0; i < arr.length; i += 2) {
