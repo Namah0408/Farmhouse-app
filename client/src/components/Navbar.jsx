@@ -83,7 +83,7 @@ function MobileMenu() {
           <MobileLink to="/amenities-gallery" label="Gallery" closeMenu={() => setOpen(false)} />
           <MobileLink to="/booking" label="Booking" closeMenu={() => setOpen(false)} />
           <MobileLink to="/contact" label="Contact" closeMenu={() => setOpen(false)} />
-          <MobileLink to="/admin/login" label="Admin" closeMenu={() => setOpen(false)} />
+          {/*<MobileLink to="/admin/login" label="Admin" closeMenu={() => setOpen(false)} />*/}
         </div>
       )}
     </div>
